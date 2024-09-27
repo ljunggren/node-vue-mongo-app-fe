@@ -1,10 +1,7 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router';  // Correctly import the router
+import router from './router';
 
-Vue.config.productionTip = false;
-
-new Vue({
-  router,  // Pass the router instance to the Vue instance
-  render: h => h(App),
-}).$mount('#app');
+createApp(App)
+  .use(router)
+  .mount('#app');
