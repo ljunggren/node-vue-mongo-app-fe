@@ -1,41 +1,74 @@
 <template>
-  <div id="app">
-    <h1>User List</h1>
-    <ul>
-      <li v-for="user in users" :key="user._id">
-        {{ user.name }} - {{ user.email }}
-      </li>
-    </ul>
+  <div class="p-m-3">
+    <h2>User Manager</h2>
 
-    <h2>Add a New User</h2>
-    <form @submit.prevent="addUser">
-      <input v-model="name" placeholder="Name" required />
-      <input v-model="email" placeholder="Email" required />
-      <input v-model="password" placeholder="Password" type="password" required />
-      <button type="submit">Add User</button>
-    </form>
+    <!-- Data Table for Users -->
+    <DataTable :value="users" responsiveLayout="scroll" class="p-mt-3">
+      <Column field="name" header="Name"></Column>
+      <Column field="email" header="Email"></Column>
+      <Column field="role" header="Role"></Column>
+    </DataTable>
+
+    <!-- Add User Form -->
+    <div class="p-mt-4">
+      <h3>Add New User</h3>
+      <form @submit.prevent="addUser" class="p-fluid">
+        <div class="p-field p-grid p-mb-3">
+          <label for="name" class="p-col-fixed p-pr-3">Name</label>
+          <div class="p-col">
+            <InputText id="name" v-model="name" class="input-box" required />
+          </div>
+        </div>
+
+        <div class="p-field p-grid p-mb-3">
+          <label for="email" class="p-col-fixed p-pr-3">Email</label>
+          <div class="p-col">
+            <InputText id="email" v-model="email" class="input-box" required />
+          </div>
+        </div>
+
+        <div class="p-field p-grid p-mb-3">
+          <label for="role" class="p-col-fixed p-pr-3">Role</label>
+          <div class="p-col">
+            <Dropdown id="role" v-model="role" :options="roles" optionLabel="label" class="input-box" required />
+          </div>
+        </div>
+
+        <div class="p-field p-grid p-mt-2">
+          <div class="p-col-fixed"></div> <!-- Spacer for alignment -->
+          <div class="p-col">
+            <Button label="Add User" type="submit" icon="pi pi-check" />
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
+  name: 'UserManager',
   data() {
     return {
       users: [],
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: '',
+      role: '',
+      roles: [
+        { label: 'Admin', value: 'admin' },
+        { label: 'User', value: 'user' },
+      ],
     };
   },
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get("http://localhost:8000/api/users");
+        const response = await axios.get('http://localhost:8000/api/users');
         this.users = response.data;
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error('Error fetching users:', error);
       }
     },
     async addUser() {
@@ -43,62 +76,53 @@ export default {
         const newUser = {
           name: this.name,
           email: this.email,
-          password: this.password,
+          role: this.role,
         };
-        await axios.post("http://localhost:8000/api/users", newUser);
-        this.name = "";
-        this.email = "";
-        this.password = "";
-        this.fetchUsers(); // Refresh the user list
+        await axios.post('http://localhost:8000/api/users', newUser);
+        this.resetForm();
+        this.fetchUsers();
       } catch (error) {
-        console.error("Error adding user:", error);
+        console.error('Error adding user:', error);
       }
+    },
+    resetForm() {
+      this.name = '';
+      this.email = '';
+      this.role = '';
     },
   },
   mounted() {
-    this.fetchUsers(); // Fetch users when the component is mounted
+    this.fetchUsers();
   },
 };
 </script>
 
 <style scoped>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  margin-top: 40px;
+.p-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.p-col-fixed {
+  width: 150px;
 }
 
-li {
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
+.p-pr-3 {
+  padding-right: 1rem;
 }
 
-form {
-  margin-top: 20px;
+.input-box {
+  max-width: 400px;
+  width: 100%;
 }
 
-input {
-  margin: 5px;
-  padding: 8px;
-  font-size: 14px;
+.p-col {
+  display: flex;
+  justify-content: flex-start;
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #2a9f71;
+  width: auto;
 }
 </style>
