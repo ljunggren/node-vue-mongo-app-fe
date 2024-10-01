@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import store from './store';
+
 
 // PrimeVue imports
 import PrimeVue from 'primevue/config';
@@ -21,6 +23,7 @@ import Calendar from 'primevue/calendar';
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
+app.use(store);
 
 // Register PrimeVue components globally
 app.component('Button', Button);
