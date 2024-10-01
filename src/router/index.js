@@ -1,11 +1,11 @@
 // src/router/index.js
-
+console.log("router/index.js")
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '../store';
 
 import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
-import Dashboard from '../components/Dashboard.vue';
+import Dashboard from '../components/DashboardManager.vue';
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
@@ -22,6 +22,7 @@ const router = createRouter({
 // Navigation Guards
 router.beforeEach((to, from, next) => {
   const isAuthenticated = store.getters.isAuthenticated;
+  console.log("Before navigation: ",isAuthenticated)
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login');
   } else if (to.meta.guestOnly && isAuthenticated) {
