@@ -89,6 +89,7 @@ export default {
       latestProperties: [],
       latestTenants: [],
       highestValueContracts: [],
+      message: "Min debug" + this.highestValueContracts,
     };
   },
   methods: {
@@ -117,6 +118,7 @@ export default {
   },
   mounted() {
     this.fetchDashboardData();
+    console.log("Message:", this.message);
   },
 };
 </script>

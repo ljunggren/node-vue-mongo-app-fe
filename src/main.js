@@ -19,6 +19,9 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
+import Password from 'primevue/password';
+import Message from 'primevue/message';
+import Card from 'primevue/card';
 
 const app = createApp(App);
 app.use(router);
@@ -33,5 +36,8 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Dialog', Dialog);
 app.component('Calendar', Calendar);
+app.component('Password', Password);
+app.component('Message', Message);
+app.component('Card', Card);
 
 app.mount('#app');
