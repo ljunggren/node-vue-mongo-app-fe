@@ -36,9 +36,15 @@ export default createStore({
       commit('SET_USER', null);
       commit('SET_TOKEN', null);
     },
-    async fetchUser({ commit }) {
-      const response = await apiClient.get('/users/profile');
-      commit('SET_USER', response.data);
+    async fetchUser({ commit, state }) {
+      if (state.token) {
+        try {
+          const response = await apiClient.get('/users/profile'); // Fetch user profile
+          commit('SET_USER', response.data); // Cache user data
+        } catch (error) {
+          commit('CLEAR_USER'); // Clear user data if there's an error (e.g., invalid token)
+        }
+      }
     },
   },
   getters: {

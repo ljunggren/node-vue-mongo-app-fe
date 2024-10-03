@@ -1,3 +1,5 @@
+<!-- src/App.vue -->
+
 <template>
   <div class="layout-wrapper">
     <!-- Sidebar -->
@@ -5,10 +7,28 @@
       <h2>Menu</h2>
       <ul>
         <li><router-link to="/">Dashboard</router-link></li>
-        <li><router-link to="/users">Users</router-link></li>
+        <!-- <li><router-link to="/users">Users</router-link></li> -->
         <li><router-link to="/properties">Properties</router-link></li>
         <li><router-link to="/tenants">Tenants</router-link></li>
         <li><router-link to="/contracts">Contracts</router-link></li>
+        <!-- Logout Button -->
+        <li v-if="isAuthenticated">
+           <!-- User Information -->
+          <!-- <img alt="User Avatar" src="/images/usercard.png" class="user-avatar" /> -->
+          <!-- <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p> -->
+          <Button
+            label="Logout"
+            icon="pi pi-sign-out"
+            class="p-button-text p-button-danger"
+            @click="logout"
+          />
+        </li>
+        <!-- Login and Register Links for Guests -->
+        <li v-else>
+          <br/>
+          <br/>
+          You are not logged in. <router-link to="/login">Login</router-link>
+        </li>
       </ul>
     </div>
 
@@ -22,63 +42,75 @@
 <script>
 export default {
   name: 'App',
+  computed: {
+    // Access authentication status from Vuex store
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+     // Access user data from Vuex store
+    user() {
+      return this.$store.getters.getUser;
+    },
+  },
+  methods: {
+    logout() {
+      // Dispatch the logout action
+      this.$store.dispatch('logout');
+      // Redirect to the login page
+      this.$router.push('/login');
+    },
+  },
 };
 </script>
 
 <style scoped>
-/* Layout container for sidebar and content */
 .layout-wrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
 }
 
-/* Sidebar styling */
 .sidebar {
   width: 200px;
-  background-color: #2d3e50;
-  color: #fff;
-  padding: 20px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow: auto;
+  background-color: #f8f9fa;
+  padding: 1em;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
+  font-size: 1.5em;
+  color: #343a40;
 }
 
 .sidebar ul {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.sidebar ul li {
-  margin: 15px 0;
+.sidebar li {
+  margin-bottom: 0.75em;
 }
 
-.sidebar ul li a {
-  color: #fff;
+.sidebar a {
   text-decoration: none;
-  font-size: 1.1rem;
-  display: block;
-  padding: 10px;
-  border-radius: 4px;
-  transition: background 0.3s ease;
+  color: #343a40;
+  font-weight: 500;
 }
 
-.sidebar ul li a:hover {
-  background-color: #3a4a63;
+.sidebar a:hover {
+  color: #007bff;
 }
 
-/* Main content area */
 .content {
-  margin-left: 220px; /* Ensure space for sidebar */
-  padding: 20px;
-  flex-grow: 1;
+  flex: 1;
+  padding: 2em;
+  background-color: #ffffff;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 0.5em;
 }
 </style>

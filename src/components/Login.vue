@@ -5,7 +5,7 @@
     <Card style="width: 25rem; overflow: hidden">
       <!-- Header Slot (Optional) -->
       <template #header>
-        <img alt="user header" src="/images/usercard.png" />
+        <img alt="user header" src="/images/usercard.png" class="usercard-image"/>
       </template>
 
       <!-- Title and Subtitle Slots -->
@@ -52,14 +52,6 @@
           :text="error"
           class="p-mt-2"
         />
-      </template>
-
-      <!-- Footer Slot (Optional) -->
-      <template #footer>
-        <div class="flex gap-4 mt-1">
-          <Button label="Cancel" severity="secondary" outlined class="w-full" />
-          <Button label="Save" class="w-full" />
-        </div>
       </template>
     </Card>
   </div>
@@ -119,5 +111,14 @@ export default {
 }
 .p-mt-3 {
   margin-top: 0.75em;
+}
+
+.usercard-image {
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  border-radius: 50%; /* Makes the image circular */
+  display: block;
+  margin: 0 auto; /* Centers the image horizontally */
 }
 </style>
