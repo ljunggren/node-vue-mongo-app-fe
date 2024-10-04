@@ -1,5 +1,9 @@
 <template>
   <div class="p-m-3">
+    <!-- Confirmation Dialog -->
+    <ConfirmDialog></ConfirmDialog>
+    <Toast></Toast>
+
     <h2>Property Manager</h2>
 
     <!-- Data Table for Properties -->
@@ -7,6 +11,18 @@
       <Column field="address" header="Address"></Column>
       <Column field="ownerName" header="Owner Name"></Column>
       <Column field="numberOfUnits" header="Units"></Column>
+            <Column field="_id" header="Id"></Column>
+
+      <!-- Actions Column -->
+      <Column header="Actions" bodyStyle="text-align: center;">
+        <template #body="slotProps">
+          <Button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            @click="confirmDeleteProperty(slotProps.data)"
+          />
+        </template>
+      </Column>
     </DataTable>
 
     <!-- Add Property Form -->
@@ -90,6 +106,48 @@ export default {
         console.error('Error adding property:', error);
       }
     },
+    // Show confirmation dialog
+    confirmDeleteProperty(property) {
+      this.$confirm.require({
+        message: 'Are you sure you want to delete this entry?',
+        header: 'Confirm Deletion',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.deleteProperty(property);
+        },
+        reject: () => {
+          // Optional: handle rejection
+        },
+      });
+    },
+    // Delete property from the database
+    deleteProperty(property) {
+      axios
+        .delete(`http://localhost:8000/api/properties/${property._id}`)
+        .then(() => {
+          this.$toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Property deleted',
+            life: 3000,
+          });
+          this.fetchProperties();
+        })
+        .catch((error) => {
+          const errorMessage =
+            error.response?.data?.message || 'Failed to delete property';
+
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+            life: 3000,
+          });
+
+          console.error('Error deleting property:', error);
+        });
+    },
+
     resetForm() {
       this.address = '';
       this.ownerName = '';

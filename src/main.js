@@ -23,9 +23,20 @@ import Password from 'primevue/password';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
 
+// Confirm dialog
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmationService from 'primevue/confirmationservice';
+
+// ToastService
+import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
+
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
+app.use(ConfirmationService);
+app.use(ToastService);
+
 app.use(store);
 
 // Register PrimeVue components globally
@@ -39,5 +50,10 @@ app.component('Calendar', Calendar);
 app.component('Password', Password);
 app.component('Message', Message);
 app.component('Card', Card);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('Toast', Toast);
+
 
 app.mount('#app');
