@@ -190,4 +190,11 @@ export default {
 button {
   width: auto;
 }
+
+button.p-button-icon-only{
+  background: none;
+  background-color:transparent;
+  border: none;
+  color: var(--red-600);
+}
 </style>
